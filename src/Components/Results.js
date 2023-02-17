@@ -1,20 +1,12 @@
 import firebase from '../firebase';
 import { useEffect, useState } from 'react';
 import { getDatabase, ref, push, remove, set } from 'firebase/database';
-const Results = ({ results, anonKey, userKey }) => {
+const Results = ({ results, activeKey, endpoint}) => {
     const [liked, setLiked] = useState(false);
     const [backronymToDisplay, setBackronymToDisplay] = useState([]);
     const [randomize, setRandomize] = useState(false);
     const [currentBackronymKey, setCurrentBackronymKey] = useState("");
-    const [activeKey, setActiveKey] = useState(anonKey)
-    const [endpoint, setEndpoint] = useState('anon/') 
     
-    useEffect(()=>{
-        if (userKey){
-            setActiveKey(userKey)
-            setEndpoint('users/')
-        }
-    },[])
     useEffect(() => {
         const backronymResult = results.map((letterArr) => {
             const backronymArray = [];

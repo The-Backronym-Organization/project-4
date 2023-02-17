@@ -32,6 +32,8 @@ function App() {
   // const [dbRef, setDbRef] = useState({})
   const [anonKey, setAnonKey] = useState('');
   const [userKey, setUserKey] = useState('');
+  const [activeKey, setActiveKey] = useState(anonKey)
+  const [endpoint, setEndpoint] = useState('anon/') 
 
   useEffect(() => {
     const database = getDatabase(firebase); 
@@ -39,10 +41,16 @@ function App() {
     console.log(dbref)
     const key = push(ref(database, 'anon/'), {userId:'anon'})
     setAnonKey(key.key)
+    setActiveKey(anonKey)
   },[])
   useEffect(()=>{
-    console.log(userKey)
-
+    if (userKey){
+        setActiveKey(userKey)
+        setEndpoint('users/')
+    }else{
+      setActiveKey(anonKey)
+      setEndpoint('anon/')
+    }
   },[userKey])
 
   const navigate = useNavigate();
@@ -125,7 +133,7 @@ function App() {
         />
         </Link>
         <Routes>
-          <Route path='/' element={
+          <Route path='/' element= {
             <>
               <Form 
                 validInput={validInput}
@@ -135,7 +143,8 @@ function App() {
                 context={context} 
                 setContext={setContext}/>
               {validInput ? null : <BadInput />}
-              {/* {isLoggedIn ? <UsersSavedBackronyms /> : <SavedBackronyms />} */}
+              {console.log(activeKey)}
+              <SavedBackronyms isLoggedIn={isLoggedIn} activeKey={activeKey} endpoint={endpoint} /> 
             </>
           } />
 
@@ -147,8 +156,8 @@ function App() {
                 input={input} 
                 context={context} 
                 setContext={setContext}/>
-              {validInput ? (isLoading ? <Loading /> : <Results results={results} anonKey={anonKey} userKey={userKey}/>) : (<BadInput />)}
-              {/* {isLoggedIn ? <UsersSavedBackronyms /> : <SavedBackronyms />} */}
+              {validInput ? (isLoading ? <Loading /> : <Results results={results} activeKey={activeKey} endpoint={endpoint}/>) : (<BadInput />)}
+              <SavedBackronyms isLoggedIn={isLoggedIn} activeKey={activeKey} endpoint={endpoint} /> 
             </>
           } />
           <Route path='*' element={<Error404 />} />
