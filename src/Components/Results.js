@@ -2,13 +2,14 @@ import firebase from '../firebase';
 import { useEffect, useState } from 'react';
 import { getDatabase, ref, push, remove } from 'firebase/database';
 
-const Results = ({ results }) => {
+const Results = ({ results, user }) => {
     const [liked, setLiked] = useState(false);
     const [backronymToDisplay, setBackronymToDisplay] = useState([]);
     const [randomize, setRandomize] = useState(false);
     const [currentBackronymKey, setCurrentBackronymKey] = useState("");
 
-
+    console.log(user)
+    
     useEffect(() => {
         const backronymResult = results.map((letterArr) => {
             const backronymArray = [];
@@ -32,7 +33,6 @@ const Results = ({ results }) => {
         const dbRef = ref(database);
         //push backronym to database
         const dbKey = push(dbRef, backronymToDisplay);
-
         //save key from current backronym to state
         setCurrentBackronymKey(dbKey.key);
     }

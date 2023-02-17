@@ -2,7 +2,9 @@
 @use './sass/variables.scss';
 @use './sass/fonts.scss';
 @use './sass/baseStyles';
+@use './sass/activeBackronym'; 
+@use './sass/form';
+@use './sass/loading';
 @use './sass/header';
-@use './sass/activeBackronym';
 @use './sass/toggle';
 @use './sass/savedBackronyms';

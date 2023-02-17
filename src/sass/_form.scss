@@ -1,0 +1,124 @@
+@use './variables' as *; 
+
+.invalid-input {
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 15px;
+    margin: 10px;
+    background-color: white;
+    animation: wobble 1s ease, redGlow 0.5s infinite alternate; 
+    box-shadow: 0 0 5px $red;
+    border: 2px solid $red;
+    outline: none;
+
+    /* GLOW ANIMATION */
+    @keyframes redGlow {
+        from {
+            box-shadow: 0 0 10px $red;
+        }
+
+        to {
+            box-shadow: 0 0 25px $red;
+        }
+    } 
+    /* WOBBLE ANIMATION */ 
+    @keyframes wobble { 
+    0% {
+            transform: translateX(0);
+        }
+    
+        15% {
+            transform: translateX(-15px) rotate(-5deg);
+        }
+    
+        30% {
+            transform: translateX(10px) rotate(5deg);
+        }
+    
+        45% {
+            transform: translateX(-10px) rotate(-3deg);
+        }
+    
+        60% {
+            transform: translateX(8px) rotate(2deg);
+        }
+    
+        75% {
+            transform: translateX(-6px) rotate(-1deg);
+        }
+    
+        100% {
+            transform: translateX(0);
+        }
+    }
+} 
+
+.glow {
+    color: black;
+    background: $lightBackground;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 15px;
+    margin: 10px;
+    transition: all 0.3s ease-in-out;
+
+    &:focus {
+        background-color: white;
+        animation: glow 0.5s infinite alternate;
+        box-shadow: 0 0 5px $yellow;
+        border: 2px solid $yellow;
+        outline: none;
+    }
+
+
+    @keyframes glow {
+        from {
+            box-shadow: 0 0 10px $yellow;
+        }
+
+        to {
+            box-shadow: 0 0 25px $yellow;
+        }
+    }
+
+} 
+
+.doNotPush {
+    cursor: pointer;
+    outline: none;
+    border: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: block; 
+    margin: 20px; 
+    padding: 1em 2em;
+    border-radius: 1em;
+    transform-style: preserve-3d;
+    transition: all 0.15s; 
+
+    &::before { 
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: $red;
+    border-radius: inherit;
+    transform: translate3d(0, 0.75em, -1em);
+    transition: all  0.15s;
+    } 
+
+    &:active { 
+    transform: translate(0em, 0.75em);
+    } 
+
+    &:active::before { 
+        transform: translate3d(0, 0, -1em);
+    }
+
+  }
+

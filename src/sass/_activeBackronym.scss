@@ -1,17 +1,7 @@
 @use "_variables.scss" as *;
 
-.activeResult {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
-    border: 8px solid;
-    border-image: $gradient;
-    padding: 20px;
-    background-color: $black;
+.activeResult { width: 75%; }
 
-}
 .activeBackronym {
     display: flex;
     flex-wrap: wrap;
@@ -34,7 +24,8 @@
             font-size: 7rem;
             padding-right: 20px;
             margin-right: -20px;
-            background: -webkit-linear-gradient($yellow, $red, $red);
+            background: -webkit-linear-gradient(-45deg, $red 34%, $yellow 59%);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             -webkit-text-stroke-color: $teal;

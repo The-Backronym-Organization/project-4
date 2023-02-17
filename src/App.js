@@ -1,15 +1,21 @@
-
 // Modules
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Routes, Route, useNavigate, Link } from "react-router-dom";
 
 // Components
 import Header from './Components/Header'
 import Form from './Components/Form';
 import Results from './Components/Results';
 import SavedBackronyms from './Components/SavedBackronyms';
-import { FaHeart, FaSun, FaMoon } from "react-icons/fa";
-import Toggle from './Components/Toggle';
+import UsersSavedBackronyms from './Components/UsersSavedBackronyms';
+import Login from './Components/Login';
+
+import Loading from './Components/Loading';
+import BadInput from './Components/BadInput';
+import Error404 from './Components/Error404';
+
+
 
 // style sheets
 import './App.scss';
@@ -22,6 +28,10 @@ function App() {
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [validInput, setValidInput] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState('');
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,6 +40,7 @@ function App() {
       setValidInput(true);
       setWord(input);
       setInput('');
+      navigate('/backronym');
       setContext('')
     } else {
       setResults([])
@@ -46,25 +57,17 @@ function App() {
       try{
         const wordArray = await
         axios({
-          url: "https://api.datamuse.com/words",
+          url: 'https://api.datamuse.com/words',
           params: {
             ml: context,
             sp: `${letter}*`
           },
         })
-        console.log(wordArray.data)
         return wordArray.data
       }catch(error){
           console.log('hit error', error)
           return [];
       }
-        // .then((res) => {
-        //   console.log(res.data)
-        //   return res.data;
-        // }).catch(error => {
-        //   console.log('hit error', error)
-        //   return [];
-        // })
     }
     const getWordsByLetter = async () => {
       const results = await Promise.all(inputLetterArray.map(letter => {
@@ -93,22 +96,47 @@ function App() {
     document.body.className = theme;
   }, [theme]);
 
-
-
   return (
     <div className={`App ${theme}`}>
       <div className='wrapper'>
-        <Header toggleTheme={toggleTheme}/>
-        <Toggle theme={theme} toggleTheme={toggleTheme} />
-        <Form 
-        handleSubmit={handleSubmit} 
-        setInput={setInput} 
-        input={input} 
-        context={context} 
-        setContext={setContext}/>
-        {validInput ? null : <p>bad input dude</p>}
-        {isLoading ? <p>Loading...Ï</p> : <Results results={results} />}
-        <SavedBackronyms />
+        <Link to="/">
+         <Header 
+        toggleTheme={toggleTheme}
+        theme={theme}/>
+        <Login
+        setIsLoggedIn={setIsLoggedIn}
+        setUser={setUser}
+        />
+        </Link>
+        <Routes>
+          <Route path='/' element={
+            <>
+              <Form 
+                validInput={validInput}
+                handleSubmit={handleSubmit} 
+                setInput={setInput} 
+                input={input} 
+                context={context} 
+                setContext={setContext}/>
+              {validInput ? null : <BadInput />}
+              {isLoggedIn ? <UsersSavedBackronyms /> : <SavedBackronyms />}
+            </>
+          } />
+
+          <Route path='backronym' element={
+            <>
+              <Form 
+                handleSubmit={handleSubmit} 
+                setInput={setInput} 
+                input={input} 
+                context={context} 
+                setContext={setContext}/>
+              {validInput ? (isLoading ? <Loading /> : <Results results={results} user={user} />) : (<BadInput />)}
+              {isLoggedIn ? <UsersSavedBackronyms /> : <SavedBackronyms />}
+            </>
+          } />
+          <Route path='*' element={<Error404 />} />
+        </Routes>
       </div>
     </div>
   );

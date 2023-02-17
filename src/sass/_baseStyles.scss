@@ -12,11 +12,29 @@ html {
     width: 90%;
 }
 
+section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    border: 8px solid;
+    border-image: $gradient;
+    padding: 20px;
+    background-color: $black;
+}
+
 ul,
 li {
     margin: 0;
     padding: 0;
     list-style: none;
+}
+
+img {
+    object-fit: cover;
+    width: 100%;
+    display: block;
 }
 
 button {
@@ -33,11 +51,12 @@ button {
     margin: 3px;
     border: 1px solid #d15249;
     border-bottom-color: $darkRed;
-    padding: 9px 20px 4px 25px;
     background-color: $red;
     background-image: linear-gradient($red, $darkRed);
     box-shadow: 0 1px 1px $darkRed;
     transform: skewY(-0.7deg);
+    transition: 0.2s;
+    i { padding: 9px 20px 4px 25px; }
     &:hover,
     &:focus {
         background-color: $darkRed;
